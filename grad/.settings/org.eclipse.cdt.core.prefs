@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+environment/project/com.android.toolchain.gcc.960590300/NDKROOT/delimiter=;
+environment/project/com.android.toolchain.gcc.960590300/NDKROOT/operation=append
+environment/project/com.android.toolchain.gcc.960590300/NDKROOT/value=C\:\\Users\\anilyildiz\\Downloads\\android\\android-ndk-r13b
+environment/project/com.android.toolchain.gcc.960590300/OPENCV_HOME/delimiter=;
+environment/project/com.android.toolchain.gcc.960590300/OPENCV_HOME/operation=append
+environment/project/com.android.toolchain.gcc.960590300/OPENCV_HOME/value=C\:/Users/anilyildiz/Downloads/android/opencv/android/OpenCV-2.4.11-android-sdk/OpenCV-android-sdk
+environment/project/com.android.toolchain.gcc.960590300/append=true
+environment/project/com.android.toolchain.gcc.960590300/appendContributed=true

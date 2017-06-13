@@ -1,0 +1,20 @@
+
+**** Build of configuration Default for project grad ****
+
+C:\Users\anilyildiz\Downloads\android\android-ndk-r13b\build\ndk-build.cmd all 
+Android NDK: WARNING: APP_PLATFORM android-16 is larger than android:minSdkVersion 14 in ./AndroidManifest.xml    
+[armeabi-v7a] Install        : libgrad.so => libs/armeabi-v7a/libgrad.so
+[armeabi-v7a] Install        : libnative_camera_r2.2.0.so => libs/armeabi-v7a/libnative_camera_r2.2.0.so
+[armeabi-v7a] Install        : libnative_camera_r2.3.3.so => libs/armeabi-v7a/libnative_camera_r2.3.3.so
+[armeabi-v7a] Install        : libnative_camera_r3.0.1.so => libs/armeabi-v7a/libnative_camera_r3.0.1.so
+[armeabi-v7a] Install        : libnative_camera_r4.0.0.so => libs/armeabi-v7a/libnative_camera_r4.0.0.so
+[armeabi-v7a] Install        : libnative_camera_r4.0.3.so => libs/armeabi-v7a/libnative_camera_r4.0.3.so
+[armeabi-v7a] Install        : libnative_camera_r4.1.1.so => libs/armeabi-v7a/libnative_camera_r4.1.1.so
+[armeabi-v7a] Install        : libnative_camera_r4.2.0.so => libs/armeabi-v7a/libnative_camera_r4.2.0.so
+[armeabi-v7a] Install        : libnative_camera_r4.3.0.so => libs/armeabi-v7a/libnative_camera_r4.3.0.so
+[armeabi-v7a] Install        : libnative_camera_r4.4.0.so => libs/armeabi-v7a/libnative_camera_r4.4.0.so
+[armeabi-v7a] Install        : libnonfree.so => libs/armeabi-v7a/libnonfree.so
+[armeabi-v7a] Install        : libopencv_java.so => libs/armeabi-v7a/libopencv_java.so
+[armeabi-v7a] Install        : libgnustl_shared.so => libs/armeabi-v7a/libgnustl_shared.so
+
+**** Build Finished ****

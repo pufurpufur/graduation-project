@@ -1,0 +1,38 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="4"
+    android:rowCount="3"
+    android:rowOrderPreserved="true"
+    android:columnOrderPreserved="true"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:onClick="onPreview"
+        android:text="@string/preview" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:onClick="onNative"
+        android:text="@string/native_match" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_row="2"
+        android:layout_column="1"
+        android:onClick="onJava"
+        android:text="@string/java_match" />
+
+</GridLayout>
