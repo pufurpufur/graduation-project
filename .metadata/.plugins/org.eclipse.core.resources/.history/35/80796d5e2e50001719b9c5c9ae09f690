@@ -1,0 +1,60 @@
+package com.ayildiz.grad;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DatabaseManager extends SQLiteOpenHelper {
+	private static final int DATABASE_VERSION = 1;
+	private static final String DATABASE_NAME = "gradDatabase";
+	
+	private static final String BUILDINGS = "buildings";
+	private static final String PLACES = "places";
+	private static final String DISTANCES = "distances";
+	
+	private static final String BUILDINGS_ID = "id";
+	private static final String BUILDINGS_EXPLANATION = "explanation";
+	private static final String PLACES_ID = "id";
+	private static final String PLACES_BUILDING_ID = "building_id";
+	private static final String PLACES_IMAGE = "image";
+	private static final String PLACES_FLOOR = "floor";
+	private static final String PLACES_EXPLANATION = "explanation";
+	private static final String DISTANCES_FROM = "from";
+	private static final String DISTANCES_TO = "to";
+	private static final String DISTANCES_COST = "cost";
+	private static final String DISTANCES_DIRECTION = "direction";
+	
+	public DatabaseManager(Context context){
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase database) {
+		String CREATE_BUILDINGS = "CREATE TABLE " + BUILDINGS + "(" +
+				BUILDINGS_ID + " INTEGER PRIMARY KEY," +
+				BUILDINGS_EXPLANATION + " TEXT)";
+		
+		String CREATE_PLACES = "CREATE TABLE " + PLACES + "(" +
+				PLACES_ID + " INTEGER PRIMARY KEY," +
+				PLACES_BUILDING_ID + " INTEGER," +
+				PLACES_IMAGE + " BLOB," +
+				PLACES_FLOOR + " INTEGER," +
+				PLACES_EXPLANATION + " TEXT)";
+		
+		String CREATE_DISTANCES = "CREATE TABLE " + DISTANCES + "(" +
+				DISTANCES_FROM + " INTEGER PRIMARY KEY," +
+				DISTANCES_TO + " INTEGER PRIMARY KEY," +
+				DISTANCES_COST + " INTEGER," +
+				DISTANCES_DIRECTION + " TEXT)";
+		
+		database.execSQL(CREATE_BUILDINGS);
+		database.execSQL(CREATE_PLACES);
+		database.execSQL(CREATE_DISTANCES);
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// TODO Auto-generated method stub
+		
+	}
+}

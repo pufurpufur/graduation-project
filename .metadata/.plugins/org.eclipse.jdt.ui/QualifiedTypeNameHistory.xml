@@ -36,12 +36,10 @@
 <fullyQualifiedTypeName name="org.opencv.core.Scalar"/>
 <fullyQualifiedTypeName name="org.opencv.core.MatOfByte"/>
 <fullyQualifiedTypeName name="org.opencv.features2d.Features2d"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="android.view.View"/>
 <fullyQualifiedTypeName name="org.opencv.core.Mat"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="android.content.Intent"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="java.io.BufferedWriter"/>
 <fullyQualifiedTypeName name="java.io.FileWriter"/>
@@ -50,4 +48,10 @@
 <fullyQualifiedTypeName name="java.util.Comparator"/>
 <fullyQualifiedTypeName name="org.opencv.features2d.FeatureDetector"/>
 <fullyQualifiedTypeName name="org.json.JSONObject"/>
+<fullyQualifiedTypeName name="android.database.sqlite.SQLiteOpenHelper"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.ayildiz.model.Building"/>
+<fullyQualifiedTypeName name="android.database.Cursor"/>
 </qualifiedTypeNameHistroy>

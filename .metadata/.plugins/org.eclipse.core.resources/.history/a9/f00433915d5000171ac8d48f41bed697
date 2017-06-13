@@ -1,0 +1,157 @@
+package com.ayildiz.grad;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.*;
+import org.opencv.features2d.*;
+import org.opencv.highgui.Highgui;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+	
+	static final String logTag = "grad App";
+	private int screenWidth = 0;
+	private int screenHeight = 0;
+	
+	static{
+		if(!OpenCVLoader.initDebug()){
+			Log.e(logTag, "opencv could not be initialized");
+		}
+		else{
+			System.loadLibrary("gnustl_shared");
+			System.loadLibrary("nonfree");
+			System.loadLibrary("grad");
+		}
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		getScreenSize();
+	}
+	
+	public void onPreview(View view){
+		Intent intent = new Intent(this, CamActivity.class);
+		startActivity(intent);
+	}
+	
+	public void onNative(View view){
+		Mat img1 = Highgui.imread(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera/base1.jpg");
+		Mat img2 = Highgui.imread(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera/base2.jpg");
+		Mat outImage = new Mat(img1.rows(), img1.cols(), img1.type());
+		
+		Match(img1.getNativeObjAddr(), img2.getNativeObjAddr(), outImage.getNativeObjAddr());
+
+		boolean isWrite = Highgui.imwrite(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera/out_native.jpg", outImage);
+		Toast.makeText(MainActivity.this, isWrite == true ? "match successful" : "match failed", Toast.LENGTH_LONG).show();
+	}
+	
+	public void onJava(View view){
+		FeatureDetector detector = FeatureDetector.create(FeatureDetector.FAST);
+		DescriptorExtractor descriptor = DescriptorExtractor.create(DescriptorExtractor.ORB);
+		DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
+		
+		// if matcher is flann-based
+		/*
+		try {
+			File flannParams = File.createTempFile("flann_params", ".yaml");
+			
+			BufferedWriter writer = new BufferedWriter(new FileWriter(flannParams));
+			writer.write(ymlParamsDefault);
+			writer.close();
+			
+			matcher.read(flannParams.getAbsolutePath());
+			flannParams.deleteOnExit();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
+		
+		// first image
+		Mat img1 = Highgui.imread(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera/base1_min.jpg");
+		Mat descriptors1 = new Mat();
+		MatOfKeyPoint keypoints1 = new MatOfKeyPoint();
+		
+		// second image
+		Mat img2 = Highgui.imread(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera/base2_min.jpg");
+		Mat descriptors2 = new Mat();
+		MatOfKeyPoint keypoints2 = new MatOfKeyPoint();
+		
+		// detect keypoints
+		detector.detect(img1, keypoints1);
+		detector.detect(img2, keypoints2);
+		
+		// sort keypoints
+		List<KeyPoint> sortedKeypoints1 = keypoints1.toList();
+		List<KeyPoint> sortedKeypoints2 = keypoints2.toList();
+		Comparator<KeyPoint> comparator = new Comparator<KeyPoint>() {
+			@Override
+			public int compare(KeyPoint lhs, KeyPoint rhs) {
+				return (int)(rhs.response - lhs.response);
+			}
+		};
+		Collections.sort(sortedKeypoints1, comparator);
+		Collections.sort(sortedKeypoints2, comparator);
+		
+		keypoints1.fromList(sortedKeypoints1.subList(0, 500));
+		keypoints2.fromList(sortedKeypoints2.subList(0, 500));
+		
+		// compute descriptors
+		descriptor.compute(img1, keypoints1, descriptors1);
+		descriptor.compute(img2, keypoints2, descriptors2);
+		
+		// match descriptors
+		LinkedList<MatOfDMatch> matches = new LinkedList<MatOfDMatch>();
+		matcher.knnMatch(descriptors1, descriptors2, matches, 2);
+		
+		// output image
+		Mat outputImg = new Mat();
+		MatOfByte drawnMatches = new MatOfByte();
+
+		float dist = 0.6f;
+		
+        LinkedList<DMatch> goodMatchesList = new LinkedList<DMatch>();
+        for (int i = 0; i < matches.size(); i++) {
+            MatOfDMatch matofDMatch = matches.get(i);
+            DMatch[] dmatcharray = matofDMatch.toArray();
+            DMatch m1 = dmatcharray[0];
+            DMatch m2 = dmatcharray[1];
+
+            if (m1.distance <= m2.distance * dist) {
+                goodMatchesList.addLast(m1);
+            }
+        }
+        
+        MatOfDMatch goodMatches = new MatOfDMatch();
+        goodMatches.fromList(goodMatchesList);
+		
+		Features2d.drawMatches(img1, keypoints1, img2, keypoints2, goodMatches, 
+		outputImg, Scalar.all(-1), Scalar.all(-1), drawnMatches, Features2d.NOT_DRAW_SINGLE_POINTS);
+		Mat flippedImg = outputImg;
+		Core.flip(outputImg.t(), flippedImg, 1);
+		boolean isWrite = Highgui.imwrite(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera/out_java.jpg", flippedImg);
+		Toast.makeText(MainActivity.this, isWrite == true ? "match successful" : "match failed", Toast.LENGTH_LONG).show();
+	}
+	
+	private void getScreenSize(){
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		screenWidth = displayMetrics.widthPixels;
+		screenHeight = displayMetrics.heightPixels;
+	}
+
+	public native void Match(long previewAddr, long baseAddr, long outputAddr);
+}
